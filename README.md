@@ -1,243 +1,76 @@
-# React Information Flow
+# React Callback Function Example
 
-## Learning Goals
+This is a simple example of how to use callback functions as props to update state in a parent component in a React application. In this example, we'll have a parent component that maintains a counter state and a child component that increments the counter when a button is clicked.
 
-- Understand the flow of information between components with props
-- Use callback functions as props to update state in a parent component
+# Author
 
-## Introduction
+Stephan Maina(PERFECT-TECH)
 
-In this lesson, we'll explore how to pass callback functions as props in order
-to change state in a parent component.
+# Installation
 
-## How Does Information Flow Between Components?
+Clone the repository.
+Navigate to the project directory.
+Run npm install to install the required dependencies.
+Run npm start to start the development server and view the application in your browser.
+# Parent Component
 
-We already know how to use props to pass information _down_ from parent to
-child. But how would we do the reverse? How might we have a **child** component
-send data _up_ to its **parent** component?
+The Parent component is responsible for holding the state and defining the callback function that updates the state.
 
-In order to propagate information in the opposite direction, we can send a
-**callback function as props** from the parent component to its child.
+jsx
+Copy code
+import React, { useState } from 'react';
+import Child from './Child';
 
-This allows the callback to be _owned_ by a different component than the one
-invoking it. Once invoked, the callback can send data to or change state in the
-parent component that _owns_ it, instead of the child component that _invoked_
-it.
-
-## Getting Started
-
-Assuming you've pulled down the starter code and ran `npm install` and
-`npm start`, you should see a few rectangles in your browser. The large outer
-rectangle will be a random color every time you refresh the page, but the two
-smaller rectangles inside will always have a white background.
-
-Take a moment to familiarize yourself with the code base. We have a simple
-application that renders a single `Parent` component and two `Child` components.
-The component hierarchy is as follows:
-
-```txt
-App
-└───Parent
-    ├───Child
-    └───Child
-```
-
-## Deliverables Part 1
-
-- When either `Child` component is clicked, the `Parent` component should change
-  color.
-
-`src/randomColorGenerator.js` has a helper function `getRandomColor()`
-implemented for you that generates a random color.
-
-### Changing the color of Parent
-
-The `Parent` component has a state variable called `color` that is initially set
-to a random color. To update state, we'll create a simple `handleChangeColor`
-function:
-
-```jsx
 function Parent() {
-  const randomColor = getRandomColor();
-  const [color, setColor] = useState(randomColor); // initial value for color state
+  // State in the parent component
+  const [counter, setCounter] = useState(0);
 
-  function handleChangeColor() {
-    const newRandomColor = getRandomColor();
-    setColor(newRandomColor); // update color state to a new value
-  }
+  // Callback function to update the parent's state
+  const handleIncrement = () => {
+    setCounter(counter + 1);
+  };
 
   return (
-    <div className="parent" style={{ backgroundColor: color }}>
-      <Child />
-      <Child />
+    <div>
+      <h2>Parent Component</h2>
+      <p>Counter: {counter}</p>
+      {/* Render the child component and pass the callback function as a prop */}
+      <Child onIncrement={handleIncrement} />
     </div>
   );
 }
-```
 
-But we are going to want to run this `handleChangeColor()` function when either
-`Child` component is clicked. So we are going to pass this state changing
-function _as a prop_ to both `Child` components.
+export default Parent;
+# Child Component
 
-```jsx
-return (
-  <div className="parent" style={{ backgroundColor: color }}>
-    <Child onChangeColor={handleChangeColor} />
-    <Child onChangeColor={handleChangeColor} />
-  </div>
-);
-```
+The Child component receives the callback function as a prop and uses it to update the parent's state when the button is clicked.
 
-Now, `Child` will have a prop called `onChangeColor` that is a _function_.
-Specifically, it is the same function object as our `Parent`'s
-`handleChangeColor` function. Want to see for yourself? Put a `console.log`
-inside the `Child` component.
+jsx
+Copy code
+import React from 'react';
 
-```jsx
-function Child({ onChangeColor }) {
-  console.log(onChangeColor);
-  return <div className="child" style={{ backgroundColor: "#FFF" }} />;
-}
-```
-
-We can now use this `onChangeColor` prop as an event handler:
-
-```jsx
-console.log(onChangeColor);
-return (
-  <div
-    onClick={onChangeColor}
-    className="child"
-    style={{ backgroundColor: "#FFF" }}
-  />
-);
-```
-
-And ta-da! Now, if you go to the app, clicking on _either_ of the white
-rectangle `Child` components will cause the `Parent` component to change color.
-
-Let's walk though those steps:
-
-- When the `div` in the `Child` component is clicked, it will use the
-  `onChangeColor` variable to determine what function to run
-- `onChangeColor` is a prop that is passed down from the `Parent` component,
-  which references the `handleChangeColor` function
-- The `handleChangeColor` function is the function that will actually run when
-  the `div` is clicked, and will update state in the `Parent` component
-
-Now, let's add one more feature!
-
-## Deliverables Part 2
-
-- When either `Child` component is clicked, it should change its own background
-  color to a random color, and the other `Child` component should change to
-  _that same_ color.
-
-Now, we could put some state in our `Child` component to keep track of its
-color. However:
-
-- **Sibling components cannot pass data to each other directly**
-- **Data can only flow up and down between parent and child**
-
-So if we update the color of one `Child` component, we have no way to pass that
-data to the _other_ `Child` component.
-
-The solution is to store the color of the `Child` in the state of the `Parent`
-component. Then, we let the `Parent` component handle the passing of that data
-to each of its children components. We'll start by creating a variable to keep
-track of the color of the `Child` components using state:
-
-```jsx
-function Parent() {
-  const randomColor = getRandomColor();
-  const [color, setColor] = useState(randomColor);
-  const [childrenColor, setChildrenColor] = useState("#FFF");
-
-  // ...
-}
-```
-
-Since the data that represents the color of the two `Child` components lives in
-`Parent`, we should pass that data down as props:
-
-```jsx
-return (
-  <div className="parent" style={{ backgroundColor: color }}>
-    <Child color={childrenColor} onChangeColor={handleChangeColor} />
-    <Child color={childrenColor} onChangeColor={handleChangeColor} />
-  </div>
-);
-```
-
-Now let's actually use that props data in the `Child` component:
-
-```jsx
-function Child({ onChangeColor, color }) {
-  return (
-    <div
-      onClick={onChangeColor}
-      className="child"
-      style={{ backgroundColor: color }}
-    />
-  );
-}
-```
-
-Lastly, we have to update the `handleChangeColor()` function in `Parent` to
-change not just the `color` state, but also the `childrenColor`. To practice
-sending data _back_ to the parent, let's change our `handleChangeColor` to take
-in an argument of `newChildColor` and then use that variable to update the state
-of the `Child` component:
-
-```jsx
-function handleChangeColor(newChildColor) {
-  const newRandomColor = getRandomColor();
-  setColor(newRandomColor);
-  setChildrenColor(newChildColor);
-}
-```
-
-Now that the function takes in an argument, we can create a new function in our
-`Child` component that invokes `onChangeColor` and passes in a random color as
-the argument; we also need to update the component's `onClick` callback to be
-that new function:
-
-```jsx
-function Child({ onChangeColor, color }) {
-  function handleClick() {
-    const newColor = getRandomColor();
-    onChangeColor(newColor);
-  }
+function Child({ onIncrement }) {
+  // Handle the click event in the child component
+  const handleClick = () => {
+    // Invoke the callback function received as a prop
+    onIncrement();
+  };
 
   return (
-    <div
-      onClick={handleClick}
-      className="child"
-      style={{ backgroundColor: color }}
-    />
+    <div>
+      <h3>Child Component</h3>
+      <button onClick={handleClick}>Increment</button>
+    </div>
   );
 }
-```
 
-Wow! Check out the finished product in the browser! When either `Child`
-component is clicked, the `Parent` changes to a random color, and both
-`Child` components change to a different random color.
+export default Child;
+# Running the Application
 
-## Conclusion
+After following the installation steps, you should see a React application with the parent component displaying a counter value and the child component rendering a button labeled "Increment." Clicking the button in the child component will trigger the callback function received from the parent and update the counter value in the parent component.
 
-For information to propagate **down** the component tree, parents pass `props`
-to their children.
+# Conclusion
 
-For information to propagate **up** the component tree, we must invoke
-**callbacks** that were passed from parents to children as `props`. When
-invoking the callback, we can pass any needed values from the child component to
-the parent component as arguments.
+Using callback functions as props is a powerful technique in React for managing state and handling interactions between components. This example demonstrates a simple use case, but the same pattern can be applied to more complex scenarios in real-world applications.
 
-Components of the same level (sibling components) cannot communicate directly!
-We can only communicate up and down the component tree. So if multiple
-components need to share the same information, that state should live in the
-parent component (or a more general ancestor).
-
-## Resources
-
-- [Lifting State Up](https://reactjs.org/docs/lifting-state-up.html)
+Feel free to explore and modify the code to further understand how props and callback functions facilitate the flow of information between components in a React application. Happy coding!

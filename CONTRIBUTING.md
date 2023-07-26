@@ -1,37 +1,40 @@
-# Contributing to Learn.co Curriculum
+# Contributing to react-hooks-information-flow-code-along
 
-We're really excited that you're about to contribute to the [open curriculum](https://learn.co/content-license) on [Learn.co](https://learn.co). If this is your first time contributing, please continue reading to learn how to make the most meaningful and useful impact possible.
+Thank you for your interest in contributing to react-hooks-information-flow-code-along! We appreciate your efforts to make this project better and welcome contributions from the community.
 
-## Raising an Issue to Encourage a Contribution
+# License
 
-If you notice a problem with the curriculum that you believe needs improvement
-but you're unable to make the change yourself, you should raise a Github issue
-containing a clear description of the problem. Include relevant snippets of
-the content and/or screenshots if applicable. Curriculum owners regularly review
-issue lists and your issue will be prioritized and addressed as appropriate.
+By contributing to this project, you agree that your contributions will be licensed under the MIT License as stated in the LICENSE.md file.
 
-## Submitting a Pull Request to Suggest an Improvement
+# How to Contribute
 
-If you see an opportunity for improvement and can make the change yourself go
-ahead and use a typical git workflow to make it happen:
+* Fork the repository on GitHub.
+* Create a new branch from the main branch with a descriptive name for your feature or bug fix.
+* Make necessary changes, improvements, or bug fixes in your branch.
+* Ensure that your code adheres to the project's coding conventions and style guidelines.
+* Write tests for your changes to maintain code quality.
+* Commit your changes with clear and descriptive commit messages.
+* Push your branch to your forked repository on GitHub.
+* Create a pull request against the main branch of the original repository.
+# Code of Conduct
 
-* Fork this curriculum repository
-* Make the change on your fork, with descriptive commits in the standard format
-* Open a Pull Request against this repo
+Please note that this project follows the Code of Conduct. We expect all contributors to adhere to this code of conduct when participating in the project.
 
-A curriculum owner will review your change and approve or comment on it in due
-course.
+# Issue Reporting
 
-# Why Contribute?
+If you encounter any issues, bugs, or have suggestions for improvements, please check the existing issues in the repository or create a new one to track the problem or request.
 
-Curriculum on Learn is publicly and freely available under Learn's
-[Educational Content License](https://learn.co/content-license). By
-embracing an open-source contribution model, our goal is for the curriculum
-on Learn to become, in time, the best educational content the world has
-ever seen.
+# Feedback and Discussions
 
-We need help from the community of Learners to maintain and improve the
-educational content. Everything from fixing typos, to correcting
-out-dated information, to improving exposition, to adding better examples,
-to fixing tests—all contributions to making the curriculum more effective are
-welcome.
+We value feedback and discussions related to the project. You can reach out to us through GitHub issues or other communication channels specified in the project's README.md.
+
+# Recognition
+
+Contributors are an essential part of this project, and we appreciate your efforts. We will acknowledge all contributors in the README.md file.
+
+# Questions
+
+If you have any questions about the contribution process or anything related to the project, feel free to reach out to us. We're here to help!
+
+Thank you for your contribution and support! Together, we can build something great.
+
